@@ -1,0 +1,6 @@
+### Welcome to Acme Bank ###
+Opening balance for February: $50.00
+Your Deposits: $100.00
+Your Withdrawals: $25.00
+Your final balance today is: $125.00
+Thank you for doing business at Acme Bank.

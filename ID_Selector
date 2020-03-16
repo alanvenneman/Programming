@@ -1,0 +1,31 @@
+
+# First get all the field names from subdivisions - this might not be necessary.
+field_names = [f.name for f in arcpy.ListFields("arcsde.SDE.Subdivisions_Res")]
+# Open a search cursor so that we can create the where clause that will be used to select only the features that need to be updated.
+cursor = arcpy.da.SearchCursor("arcsde.SDE.Subdivisions_Res")
+for row in cursor:
+	wc = 'NAME_SEC = ' + "'%s'" %row
+	select_subdiv = arcpy.SelectLayerByAttribute_management("arcsde.SDE.Subdivisions_Res", "NEW_SELECTION", where)
+	# extract the project serial number here and set it to a variable
+	select_sgrav = arcpy.SelectLayerByLocation_management("arcsde.SDE.sGravityMain", "INTERSECT", select_subdiv, 0, "NEW_SELECTION")
+	# After each subdivision is selected, 
+	u_cursor = arcpy.da.UpdateCursor("arcsde.SDE.sGravityMain")
+	for u_row in u_cursor:
+		
+	
+	# do these later
+	select_dgrav = arcpy.SelectLayerByLocation_management("arcsde.SDE.dGravityMain", "INTERSECT", select_sgrav, 0, "ADD_TO_SELECTION")
+	select_wpres = arcpy.SelectLayerByLocation_management("arcsde.SDE.wPressurizedMain", "INTERSECT", select_dgrav, 0, "ADD_TO_SELECTION")
+
+
+	"""Alternatively, there is another way to do do this
+
+	Open a search cursor on the PROJECT SERIAL NUMBER field in the """
+
+
+# This shit works in the Python window in ArcMap if you enter it in one line at a time. I can get you sample data if you want to test it.
+cursor = arcpy.da.SearchCursor("Subdivisions_Res", "NAME_SEC")
+for row in cursor:
+	where = 'NAME_SEC = ' + "'%s'" %row
+	print (where)
+	

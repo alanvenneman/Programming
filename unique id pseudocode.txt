@@ -1,0 +1,9 @@
+Unique ID Maker:
+
+Inputs: subdivision feature layer (NAME_SEC)
+
+Use the slice function to get the first three letters off the name. Each slice will need a six-digit random number assigned to it, followed by an 'S' for subdivision. (Later we will add in the 'R' for Road)
+
+We open up one for loop, search cursor to find the NAME_SEC, update cursor to populate SUBDIV_LEGAL_NAME.
+
+For the Roadways, we will need to enter in all the nearby subdivisions into an Excel file, paste in the necessary number of six digit random/unique numbers, and add the R at the end. We can do a macro or simple concatentation to generate a list of UIDs. Then we will need to enter them into Alchemy. 

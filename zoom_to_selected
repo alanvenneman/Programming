@@ -1,0 +1,21 @@
+mxd = arcpy.mapping.MapDocument(r"CURRENT")
+df = arcpy.mapping.ListDataFrames(mxd, "Layers")[0]
+
+arcpy.MakeFeatureLayer_management("carereport", "Siteslyr", """gid = 2739""")
+
+addLayer = arcpy.mapping.Layer(r"Siteslyr")
+arcpy.mapping.AddLayer(df, addLayer, "AUTO_ARRANGE")
+
+arcpy.RefreshActiveView()
+arcpy.RefreshTOC()
+
+lyr = arcpy.mapping.ListLayers(mxd, "Siteslyr", df)[0]
+df.zoomToSelectedFeatures()
+
+df.scale *= 1.1
+arcpy.RefreshActiveView()
+arcpy.mapping.ExportToJPEG(mxd, r"C:\caredev.jpg", df,
+                           df_export_width=1600,
+                           df_export_height=1200,
+                           world_file=True)
+del mxd, df

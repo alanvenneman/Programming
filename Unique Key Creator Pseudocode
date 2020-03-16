@@ -1,0 +1,93 @@
+#	Unique Key Creator
+#	Created by Alan Venneman for the City of Sugar Land
+#
+#	Purpose: to creates a list of subdivision names and a new identifier based on the
+#	* first three characters of the subdivision name
+#	* six characters from the old CAD file and section number of the subdivision plan sets
+#	* Either an 'S' for subdivision or 'R' for roadway
+#
+#	Basic format of identifier: LLL-NNNN-NN-S (or -R)
+#
+#	The subdivision feature class in our SDE contains 595 subdivisions both within current 
+#	city limits and in future annexations.
+#	This feature class does not include any roadway not included in the subdivision plansets 
+#	that reside in Alchemy.
+#	It is not clear if we can automatically create those identifiers. We just might use the 
+#	field calculation fucntion of ArcMap or Excel.
+#
+import arcpy
+
+
+class Creator(object):
+    def __init__(self):
+        """Define the toolbox (the name of the toolbox is the name of the
+        .pyt file)."""
+        self.label = "Toolbox"
+        self.alias = ""
+
+        # List of tool classes associated with this toolbox
+        self.tools = [Tool]
+
+
+class UniqueKeyerator(object):
+    def __init__(self):
+        """Define the tool (tool name is the name of the class)."""
+        self.label = "Tool"
+        self.description = ""
+        self.canRunInBackground = False
+
+    def getParameterInfo(self):
+        """Define parameter definitions"""
+        input_table = arcpy.Parameter(
+        	displayName="Input Table",
+        	name="input_table",
+        	datatype="DETable",
+        	parameterType="Required",
+        	direction="Input")
+
+        desc_name = arcpy.Parameter(
+        	displayName="Desciptive Name",
+        	name="desc_name",
+        	datatype="Field",
+        	parameterType="Required",
+        	direction="Input")
+        desc_name.parameterDependencies = [input_table.name]
+
+        cad_number = arcpy.Parameter(
+        	displayName="CAD Number",
+        	name="cad_number",
+        	datatype="Field",
+        	parameterType="Required",
+        	direction="Input")
+        cad_number.parameterDependencies = [input_table.name]
+
+        identifier_list = arcpy.Parameter(
+        	displayName="Identifier List",
+        	name="identifier_list",
+        	datatype="DETable",
+        	parameterType="Required",
+        	direction="Output")
+
+        params = [input_table, desc_name, cad_number, identifier_list]
+        return params
+
+    def updateParameters(self, parameters):
+        """Modify the values and properties of parameters before internal
+        validation is performed.  This method is called whenever a parameter
+        has been changed."""
+        return
+
+    def updateMessages(self, parameters):
+        """Modify the messages created by internal validation for each tool
+        parameter.  This method is called after internal validation."""
+        return
+
+    def execute(self, params, messages):
+        """One big for loop."""
+        rawtable = params[0].valueAsText
+        excelfields = arcpy.ListFields(rawtable)
+        try:
+        	spreads = open(excelfields)
+        except IOError as e:
+        	print("Sorry, I cannot open {}. For more details: /n{}".format(excelfields, e))
+        return
