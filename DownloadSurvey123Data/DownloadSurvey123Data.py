@@ -1,16 +1,17 @@
 
-import ago
-import urllib2
+import arcgis
+import urllib3
 import zipfile
+import time
 import json
 
 
 # ID of the feature service you want to export
 featureService_ID = "f4a06f02b1dd4b1f8904ed0d4e8713bd"
 # Output format  Shapefile | CSV | File Geodatabase
-output_format = 'Shapefile'
+output_format = 'File Geodatabase'
 # Local folder where the data will be downloaded (include slash at the end)
-download_folder = "D:/Temp/"
+download_folder = r'\\svrch02\shared\Public\Asset Management\Lift Stations\Photos\LiftStationMay2020'
 # ArcGIS user credentials to authenicate against the portal
 credentials = {'userName': 'XXXXX', 'passWord': 'YYYYYY'}
 # Address of your ArcGIS portal
@@ -28,7 +29,8 @@ def downloadFile(url, filename, token):
     :return:
     """
     print("...Downloading")
-    req = urllib2.urlopen(url + "?token=" + token)
+    pool = urllib3.PoolManager()
+    req = urllib3.urlopen(url + "?token=" + token)
     CHUNK = 16 * 1024
     with open(filename, 'wb') as fp:
         while True:

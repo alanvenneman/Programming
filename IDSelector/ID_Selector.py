@@ -1,5 +1,5 @@
 import arcpy
-import sqlalchemy as sql
+# import sqlalchemy as sql
 # import xlrd
 # import pandas as pd
 
@@ -39,7 +39,7 @@ singlequotes = ("E:\\AVenneman\\LJA Wastewater\\ID_Select_Data.gdb\\WithQuotes")
 
 cursor = arcpy.da.SearchCursor(subdivision_res, "NAME_SEC")
 for row in cursor:
-    where_clause = self.buildWhereClause("NAME_SEC", row)
+    where_clause = buildWhereClause("NAME_SEC", row)
     print(where_clause)
 
     # Process: Select Subdivision
@@ -54,7 +54,8 @@ for row in cursor:
     # Process: Select wPressurized Main
     wpres_select = arcpy.SelectLayerByLocation_management(wPressurized_Main, "INTERSECT", sgrav_select, "", "ADD_TO_SELECTION", "NOT_INVERT")
 
-def buildWhereClause(self, table, field, value):
+
+def buildWhereClause(table, field, value):
     """Constructs a SQL WHERE clause to select rows having the specified value
     within a given field and table."""
 
